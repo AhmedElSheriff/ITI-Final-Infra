@@ -1,0 +1,1 @@
+cluster_name = "private_eks"

@@ -1,0 +1,78 @@
+packages:
+  - {package_name: "unzip", package_state: 'latest'}
+
+binaries: 
+  - {
+      binary_url: "https://s3.us-west-2.amazonaws.com/amazon-eks/1.27.1/2023-04-19/bin/linux/amd64/kubectl",
+      binary_dest: "/usr/local/bin"  
+    }
+  - {
+      binary_url: "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip",
+      binary_dest: "/tmp"
+    }
+  - {
+      binary_url: "https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3",
+      binary_dest: "/tmp/get_helm.sh"
+    }
+
+files_mode:
+  - {
+      path: "/usr/local/bin/kubectl",
+      mode: "0755"
+    }
+  - {
+      path: ".aws/kubeconfig.sh",
+      mode: "0755"
+    }
+  - {
+      path: "/tmp/get_helm.sh",
+      mode: "0755"
+    }
+
+files_archive:
+  - {
+      src: "/tmp/awscli-exe-linux-x86_64.zip",
+      dest: "/tmp"
+    }
+
+script_files:
+  - {
+      script: "/tmp/aws/install"
+    }
+  - {
+      script: "/tmp/get_helm.sh"
+    }
+
+create_files:
+  - {
+      path: ".aws",
+      type: "directory",
+    }
+
+templates:
+  - {
+      src: "credentials.j2",
+      dest: ".aws/credentials"
+    }
+  - {
+      src: "kubeconfig.j2",
+      dest: ".aws/kubeconfig.sh"
+    }
+
+cluster_name: ""
+region: "us-east-1"
+access_key: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          38643738346437333562333664666338663238343435623166613837396532323132323137613532
+          6634663532386633313136623066333364313361343230310a653838613261346238666264376230
+          30366337386165333238303031663630303031356235393664626534643539666263396231613233
+          3531363236663763320a383334653239343733346461396136386433616639623966363836343730
+          64643931316537303866373330653666663137643666373133343638343761343339
+secret_key: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          62613563383565373539386239653061666431626463333232633130346566316263373437343764
+          6565343336633563306261393238666533656637373637630a383132303131386239633736373064
+          62393830653765613938353736323766353264613465333766323066623338666537646431363533
+          3538623035613938650a353738656663623862356361346666366565386630643632666537643863
+          35623831343336343635336539303633663431383535653230393332303438623738323963323265
+          3433646466383937386235333932333964663337623866666162

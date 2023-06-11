@@ -1,0 +1,9 @@
+- name: Create Deployments Directory
+  ansible.builtin.file:
+    path: deployments
+    state: directory
+
+- name: Copy Jenkins
+  ansible.builtin.copy:
+    src: helm/
+    dest: deployments

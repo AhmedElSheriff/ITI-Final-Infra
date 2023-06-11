@@ -1,0 +1,45 @@
+- name: Install Packages
+  apt: 
+    name: "{{ item.package_name }}"
+    state: "{{ item.package_state }}"
+  loop: "{{ packages }}"
+
+- name: Download External Binaries
+  ansible.builtin.get_url:
+    url: "{{ item.binary_url }}"
+    dest: "{{ item.binary_dest }}"
+  loop: "{{ binaries }}"
+
+- name: Change Files Mode
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    mode: "{{ item.mode }}"
+  loop: "{{ files_mode }}"
+
+- name: Unarchive Files
+  ansible.builtin.unarchive:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    remote_src: yes
+  loop: "{{ files_archive }}"
+
+- name: Run Script Files
+  ansible.builtin.shell: "{{ item.script }}"
+  loop: "{{ script_files }}"
+  ignore_errors: true
+
+- name: Create Files And Directories
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: "{{ item.type }}"
+  loop: "{{ create_files }}"
+
+- name: Copy Files
+  template:
+    src:  "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  loop: "{{ templates }}"
+
+- name: Update Kubeconfig
+  ansible.builtin.shell: ".aws/kubeconfig.sh"
+  become: false
