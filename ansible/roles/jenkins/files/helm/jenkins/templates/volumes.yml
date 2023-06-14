@@ -12,12 +12,12 @@ metadata:
   labels:
     type: ebs
 spec:
-  storageClassName: gp2
+  storageClassName: ebs-storage
   claimRef:
     name: jenkins-pv-claim
     namespace: jenkins
   capacity:
-    storage: 10Gi
+    storage: 3Gi
   accessModes:
     - ReadWriteOnce
   local:
@@ -29,7 +29,7 @@ spec:
         - key: kubernetes.io/hostname
           operator: In
           values:
-          - "ip-10-0-3-27.ec2.internal"
+          - {{ .Values.workernode_hostname }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -37,7 +37,7 @@ metadata:
   name: jenkins-pv-claim
   namespace: jenkins
 spec:
-  storageClassName: gp2
+  storageClassName: ebs-storage
   accessModes:
     - ReadWriteOnce
   resources:

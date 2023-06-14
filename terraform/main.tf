@@ -20,6 +20,7 @@ module "eks" {
     priv_subnets = module.vpc.priv_subnets
     bastion_host_private_ip = module.ec2.bastion_host_private_ip
     vpc_id = module.vpc.vpc_id
+    ubuntu_ami_id = module.ec2.ubuntu_ami_id
 }
 
 resource "local_file" "output_file" {

@@ -2,7 +2,7 @@ cd terraform
 terraform init
 terraform apply
 
-if [ $? -nq 0 ]
+if [ $? -ne 0 ]
 then
     echo "Error During Terraform Execution, Failed Run!"
     exit $?
@@ -25,7 +25,24 @@ $bastion_host_ip
 EOF
 
 echo "The inventory has been updated!"
+
+workernodes_asg=$(aws eks describe-nodegroup \
+--cluster-name private_eks \
+--nodegroup-name private_eks_ng \
+--query 'nodegroup.resources.autoScalingGroups[]' \
+--output text)
+
+instance_id=$(aws autoscaling describe-auto-scaling-groups \
+--auto-scaling-group-names $workernodes_asg \
+--query 'AutoScalingGroups[].Instances[0].InstanceId' \
+--output text)
+
+instance_host_name=$(aws ec2 describe-instances \
+--instance-ids $instance_id \
+--query 'Reservations[].Instances[].PrivateDnsName' \
+--output text)
+
 echo "Starting Playbook Now..."
 
-ansible-playbook ansible/playbook.yml -e "cluster_name=${cluster_name}" --ask-vault-pass
+ansible-playbook ansible/playbook.yml -e "cluster_name=${cluster_name}" -e "workernode_hostname=${instance_host_name}" --ask-vault-pass
 

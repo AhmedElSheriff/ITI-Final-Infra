@@ -13,3 +13,7 @@ variable "vpc_id" {
 variable "cluster_name" {
     type = string
 }
+
+variable "ubuntu_ami_id" {
+    type = string
+}

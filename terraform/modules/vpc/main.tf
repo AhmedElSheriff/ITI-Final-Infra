@@ -1,5 +1,7 @@
 resource "aws_vpc" "main_vpc" {
     cidr_block = var.vpc_cidr
+    enable_dns_support   = true #Required for EKS to run, default is true
+    enable_dns_hostnames = true #Required for EKS to run, default is false
 }
 
 resource "aws_subnet" "pub-subnets" {
@@ -8,6 +10,12 @@ resource "aws_subnet" "pub-subnets" {
     map_public_ip_on_launch = true
     vpc_id = aws_vpc.main_vpc.id
     availability_zone = var.availability_zones[count.index]
+
+#     tags = {
+#     Name                                          = each.key
+#     "kubernetes.io/cluster/private_eks" = "shared"
+#     "kubernetes.io/role/elb"                      = 1
+#   }
 }
 
 resource "aws_subnet" "priv-subnets" {
@@ -15,6 +23,11 @@ resource "aws_subnet" "priv-subnets" {
     cidr_block = var.subnets_cidr.priv_subs[count.index]
     vpc_id = aws_vpc.main_vpc.id
     availability_zone = var.availability_zones[count.index]
+#     tags = {
+#     Name                                          = each.key
+#     "kubernetes.io/cluster/private_eks" = "shared"
+#     "kubernetes.io/role/internal-elb"             = 1
+#   }
 }
 
 resource "aws_internet_gateway" "igw" {
