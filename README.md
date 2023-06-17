@@ -16,4 +16,4 @@ The goal of my project was to leverage infrastructure as code with Terraform to 
 
 ## Diagram
 
-![Diagram](https://github.com/ahmedlsheriff/ITI-Final-Infrastructure/blob/master/ITI-Final-Project-EKS.jpeg?raw=true)
+![Diagram](https://github.com/AhmedElSheriff/ITI-Final-Infrastructure/blob/master/ITI-Final-Project-EKS.jpeg)
