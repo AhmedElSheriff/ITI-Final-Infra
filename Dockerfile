@@ -22,7 +22,7 @@ RUN apt-get update && apt-get install -y \
     docker.io \
     vim \
     gettext \
-    sudo
+    sudo \
  && rm -rf /var/lib/apt/lists/*
 
 #install helm
@@ -43,6 +43,7 @@ RUN apt-get install -y kubectl
 RUN apt-get update && apt-get install -y openjdk-11-jdk && rm -rf /var/lib/apt/lists/*
 
 # Install AWS-CLI
+RUN apt update && apt install unzip
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 RUN unzip awscliv2.zip
 RUN ./aws/install
