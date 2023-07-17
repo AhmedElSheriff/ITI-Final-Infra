@@ -1,10 +1,11 @@
 provider "aws" {
   region = "us-east-1"
-  profile = "dev"
 }
 
 module "vpc" {
     source = "./modules/vpc"
+    vpc_cidr = var.vpc_cidr
+    subnets_cidr = var.subnets
 }
 
 module "ec2" {
@@ -12,6 +13,8 @@ module "ec2" {
     vpc_id = module.vpc.vpc_id
     priv_subnets = module.vpc.priv_subnets
     pub_subnets = module.vpc.pub_subnets
+    instance_type = var.instance_type
+    ami = var.ami
 }
 
 module "eks" {
@@ -21,6 +24,12 @@ module "eks" {
     bastion_host_private_ip = module.ec2.bastion_host_private_ip
     vpc_id = module.vpc.vpc_id
     ubuntu_ami_id = module.ec2.ubuntu_ami_id
+}
+
+module "rds" {
+    source = "./modules/rds"
+    priv_subnets = module.vpc.priv_subnets
+    vpc_id = module.vpc.vpc_id
 }
 
 resource "local_file" "output_file" {

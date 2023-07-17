@@ -1,5 +1,6 @@
 packages:
   - {package_name: "unzip", package_state: 'latest'}
+  - {package_name: "mysql-client-core-8.0", package_state: 'latest'}
 
 binaries: 
   - {

@@ -1,11 +1,10 @@
 data "aws_ami" "ubuntu" {
   most_recent = true
-
   filter {
     name   = "name"
-    values = [var.ubuntu_filter]
+    values = [ var.ami.filter ]
   }
-  owners = [ var.ubuntu_owner ]
+  owners = [ var.ami.owner ]
 }
 
 resource "aws_instance" "bastion_host" {
