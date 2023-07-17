@@ -20,7 +20,7 @@ spec:
       serviceAccountName: agent-service-account
       containers:
       - name: jenkins-ubuntu-slave
-        image: abdullahelkasaby/jenkins-agent:v1
+        image: ahmedlsheriff/jenkins-ubuntu-slave
         imagePullPolicy: Always
         ports:
         - containerPort: 22
