@@ -3,3 +3,4 @@ outputs.txt
 key.pem
 *.terraform*
 terraform.tfstate*
+inventory
