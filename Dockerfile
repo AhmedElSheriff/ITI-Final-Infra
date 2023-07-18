@@ -1,7 +1,5 @@
 FROM ubuntu:18.04
 
-USER root
-
 RUN mkdir -p /var/jenkins_home /home/jenkins
 
 RUN useradd jenkins && echo "jenkins:123456" | chpasswd
@@ -48,6 +46,11 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
 RUN unzip awscliv2.zip
 RUN ./aws/install
 
+
+RUN echo "jenkins ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
 EXPOSE 22
 
-ENTRYPOINT ["/bin/sh", "-c", "service ssh start && tail -f /dev/null"]
+USER jenkins 
+
+ENTRYPOINT ["/bin/sh", "-c", "sudo service ssh start && tail -f /dev/null"]

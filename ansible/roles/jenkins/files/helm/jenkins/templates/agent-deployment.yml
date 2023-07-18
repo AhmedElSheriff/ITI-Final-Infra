@@ -15,12 +15,11 @@ spec:
       labels:
         app: jenkins-ubuntu-slave
     spec:
-      securityContext:
-        runAsUser: 1000
       serviceAccountName: agent-service-account
       containers:
       - name: jenkins-ubuntu-slave
         image: ahmedlsheriff/jenkins-ubuntu-slave
+        command: [ "/bin/sh", "-c", "sudo chmod 777 /var/run/docker.sock && sudo service ssh start && tail -f /dev/null" ]
         imagePullPolicy: Always
         ports:
         - containerPort: 22
